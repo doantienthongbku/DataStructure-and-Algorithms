@@ -2,12 +2,10 @@
 #include <string>
 using namespace std;
 
-
 class AbstractEmployee {
 public:
     virtual void AskForPromotion() = 0;
 };
-
 
 class Employee:AbstractEmployee {
 private:
@@ -36,7 +34,7 @@ public:
         }
     }
 
-    void Work() {
+    virtual void Work() {
         cout << name << " is checking email, task backlog, performing tasks ..." << endl;
     }
 
@@ -96,12 +94,18 @@ public:
     }
 };
 
+// The most common use of polymorphism is when a parrent class
+// reference is used to refer to a child class object
+
 int main() {
     Developer d = Developer("Taft", "Emage", 21, "Python");
     Teacher t = Teacher("Lake", "UIT", 31, "Math");
 
-    d.Work();
-    t.Work();
+    Employee* e1 = &d;
+    Employee* e2 = &t;
+
+    e1->Work();
+    e2->Work();
 
     return 0;
 }
