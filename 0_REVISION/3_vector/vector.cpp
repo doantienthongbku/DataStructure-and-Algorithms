@@ -20,7 +20,9 @@ LOOP:
     for (auto it = v.begin(); it != v.end(); ++it) {        --> slower
         cout << *it << endl;
     }
-    
+    for (auto & element : vector) {
+        element.doSomething ();
+    }
 */
 
 void printVector(vector<int> v) {
