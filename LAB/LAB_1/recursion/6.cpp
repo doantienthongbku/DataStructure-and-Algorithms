@@ -2,9 +2,12 @@
 #include <string>
 using namespace std;
 
+string expand(string s) {
+    
+}
+
 int main() {
-    string s = "hello world";
-    cout << s.find('k') << endl;
+
 
     return 0;
 }

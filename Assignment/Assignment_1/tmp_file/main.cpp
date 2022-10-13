@@ -67,7 +67,7 @@ void tc3() {
 int main() {
     tc1();
     tc2();
-    // tc3();
+    tc3();
 
     return 0;
 }

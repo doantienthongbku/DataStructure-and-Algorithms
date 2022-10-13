@@ -16,7 +16,7 @@ int ConcatStringList::numNodes() const {
     return numNode;
 }
 
-// reverse a const char* and return string revered without change the original const char*
+
 string ConcatStringList::reverseStr(string str) const {
     string tmp = str;
 
@@ -144,8 +144,6 @@ ConcatStringList ConcatStringList::subString(int from, int to) const {
     }
 }
 
-/* reverse the string in each node of the linked list, and reverse the order of the nodes.
-Especially, no change the original linked list content*/
 ConcatStringList ConcatStringList::reverse() const {
     if (this->count == 0) { return ConcatStringList(""); }
 
@@ -186,15 +184,7 @@ ConcatStringList ConcatStringList::reverse() const {
 ConcatStringList::~ConcatStringList() {
     delStrList.updateDel(this->head);
     delStrList.updateDel(this->tail);
-    delStrList.deleteNode();
-    refList.deleteAllNode();
 }
-
-
-/*---------------------------------------------------------------------
-----------------------------ReferencesList-----------------------------
----------------------------------------------------------------------*/
-
 
 int ConcatStringList::ReferencesList::size() const {
     return num_node;
@@ -254,140 +244,39 @@ void ConcatStringList::ReferencesList::update(CharALNode *node, int num_ref) {
         this->num_node++;
     }
 
-    sortLinkedList();
+    // insertionSort();
 }
 
-void ConcatStringList::ReferencesList::sortLinkedList() {
-    RefNode *p = head_ref;
-    RefNode *q = nullptr;
-    int tmp;
 
-    while (p != nullptr) {
-        q = p->next;
-        while (q != nullptr) {
-            if (p->num_ref < q->num_ref) {
-                tmp = p->num_ref;
-                p->num_ref = q->num_ref;
-                q->num_ref = tmp;
-            }
-            q = q->next;
+void ConcatStringList::ReferencesList::insertionSort() {
+    sorted = nullptr;
+    RefNode *current = this->head_ref;
+
+    while (current != nullptr)
+    {
+        RefNode* next = current->next;
+        sortedInsert(current);
+        current = next;
+    }
+
+    this->head_ref = sorted;
+}
+
+void ConcatStringList::ReferencesList::sortedInsert(RefNode* newnode) {
+    if (sorted == nullptr || sorted->num_ref >= newnode->num_ref) {
+        newnode->next = sorted;
+        sorted = newnode;
+    }
+    else {
+        RefNode* current = sorted;
+        while (current->next != nullptr &&
+            current->next->num_ref < newnode->num_ref)
+        {
+            current = current->next;
         }
-        p = p->next;
-    }
-
-}
-
-// check if all num_ref is equal to 0, return true
-bool ConcatStringList::ReferencesList::isAllZero() const {
-    RefNode *p = head_ref;
-    while (p != nullptr) {
-        if (p->num_ref != 0) return false;
-        p = p->next;
-    }
-
-    return true;
-}
-
-// if all num_ref is equal to 0, delete all nodes from proof list
-void ConcatStringList::ReferencesList::deleteAllNode() {
-    if (isAllZero()) {
-        RefNode *p = head_ref;
-        while (p != nullptr) {
-            RefNode *tmp = p;
-            p = p->next;
-            delete tmp->point;
-            delete tmp;
-        }
-        head_ref = tail_ref = nullptr;
-        num_node = 0;
+        newnode->next = current->next;
+        current->next = newnode;
     }
 }
 
-ConcatStringList::RefNode* ConcatStringList::ReferencesList::getNodeFromCharALNode(CharALNode *node) {
-    RefNode *p = head_ref;
-    while (p != nullptr) {
-        if (p->point == node) return p;
-        p = p->next;
-    }
 
-    return nullptr;
-}
-
-/*---------------------------------------------------------------------
-----------------------------DeleteStringList---------------------------
----------------------------------------------------------------------*/
-
-int ConcatStringList::DeleteStringList::size() const {
-    return num_node;
-}
-
-std::string ConcatStringList::DeleteStringList::totalRefCountsString() const {
-    if (num_node == 0) return "TotalRefCounts[]";
-    string out = "TotalRefCounts[";
-    DelNode *p = head_del;
-    int index = 0;
-    while (index < num_node) {
-        out += std::to_string(p->point->num_ref);
-        if (index != num_node - 1) out += ",";
-        p = p->next;
-        index++;
-    }
-    out += "]";
-
-    return out;
-}
-
-bool ConcatStringList::DeleteStringList::isExistAt(CharALNode *node) {
-    if (num_node == 0) return false;
-    DelNode *p = head_del;
-    int index = 0;
-    while (p != nullptr) {
-        if (p->point->point == node) {
-            p->point->num_ref--; return true;
-        }
-        p = p->next;
-    }
-
-    return false;
-}
-
-void ConcatStringList::DeleteStringList::updateDel(CharALNode *node) {
-    if (!isExistAt(node)) {
-        RefNode *refnode = refList.getNodeFromCharALNode(node);
-        refnode->num_ref--;
-
-        DelNode *newnode = new DelNode(refnode);
-        if (num_node == 0) {
-            head_del = newnode;
-            tail_del = newnode;
-        } else {
-            tail_del->next = newnode;
-            tail_del = newnode;
-        }
-        num_node++;
-    }
-}
-
-/* if num_ref == 0, remove that node without change architecture of DeleteStringList*/
-void ConcatStringList::DeleteStringList::deleteNode() {
-    if (head_del->point->num_ref == 0) {
-        DelNode *tmp = head_del;
-        head_del = head_del->next;
-        tmp->point = nullptr;
-        tmp->next = nullptr;
-        num_node--;
-    } else {
-        DelNode *p = head_del;
-        DelNode *q = nullptr;
-        while (p != nullptr) {
-            if (p->point->num_ref == 0) {
-                q->next = p->next;
-                p->point = nullptr;
-                p->next = nullptr;
-                num_node--;
-            }
-            q = p;
-            p = p->next;
-        }
-    }
-}

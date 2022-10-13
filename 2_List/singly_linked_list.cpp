@@ -5,6 +5,24 @@ using namespace std;
 template<class T>
 class List {
 public:
+    struct forwardIterator {
+        forwardIterator() {}
+        forwardIterator(const forwardIterator & i) {}
+        forwardIterator(const forwardInterator && i) {}
+        virtual ~forwardIterator() {}
+        virtual forwardIterator& operator=(const forwardIterator & i) {return *this;}
+        virtual forwardIterator& operator=(const forwardIterator && i) {return *this;}
+        virtual forwardIterator& operator+(unsigned int i) {return *this;}
+        virtual forwardIterator& operator++() {return *this;}
+        virtual forwardIterator& operator++(int) {return *this;}
+        virtual T& operator*() { throw DSA_Exception(-100, "forwardIterator: operator* - Unused method"); }
+        virtual bool operator==(const forwardIterator & i) const { return true; }
+        virtual bool operator!=(const forwardIterator & i) const { return false; }
+    };
+
+    virtual forwardIterator begin() = 0;
+    virtual forwardIterator end() = 0;
+
     virtual List() {}
     virtual ~List() {}
     virtual int size() const = 0;

@@ -18,7 +18,7 @@ Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be val
 
 ## Example1:
 
-[image]('image/1.png')
+[image]('./image/1.png')
 
 ```
 Input: board = 
