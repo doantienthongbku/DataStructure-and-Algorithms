@@ -1,13 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 class LLNode {
     public:
         int val;
         LLNode* next;
-        LLNode();
-        LLNode(int val, LLNode* next);
+        LLNode() : val(0), next(nullptr) {};
+        LLNode(int val, LLNode* next) : val(val), next(next) {};
 };
 
 int convertToInt(LLNode* head) {
@@ -23,7 +22,8 @@ int convertToInt(LLNode* head) {
 LLNode* convertToLL(int num) {
     string num_str = std::to_string(num);
     std::reverse(num_str.begin(), num_str.end());
-    if (num_str.length() == 0) return new LLNode();
+
+    if (num_str.size() == 0) return NULL;
     LLNode* head = new LLNode(num_str[0] - '0', NULL);
     LLNode* temp = head;
     int len = num_str.length();
@@ -43,7 +43,8 @@ LLNode* addLinkedList(LLNode* l0, LLNode* l1) {
 }
 
 int main() {
-
+    int arr1[] = {2, 9};
+    int arr2[] = {0, 5};
 
     return 0;
 }

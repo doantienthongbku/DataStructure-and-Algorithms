@@ -25,7 +25,7 @@ template <class T>
 class SinglyLinkedList : public BaseList<T> {
 public:
     class Node;
-    // class Iterator;
+    class Iterator;
 
 protected:
     Node* head;
@@ -47,6 +47,7 @@ public:
     void    clear();
     void    dump ();
     void    toString();
+    void    reverse();
 
 public:
     class Node {
@@ -60,7 +61,8 @@ public:
         Node(T data, Node* next) : data(data), next(next) {}
     };
 
-    /*class Iterator {
+    class Iterator
+    {
     private:
         SinglyLinkedList<T> *pList;
         Node *current;
@@ -71,10 +73,14 @@ public:
         void set(const T &e);
         T &operator*();
         bool operator!=(const Iterator &iterator);
-
+        void remove();
+        
+        // Prefix ++ overload
         Iterator &operator++();
+        
+        // Postfix ++ overload
         Iterator operator++(int);
-    };*/
+    };
 };
 
 
@@ -177,34 +183,36 @@ template <class T>
 T SinglyLinkedList<T>::removeAt(int index) {
     if (index < 0 || index >= this->count) throw std::out_of_range("Index out of range");
     if (index == 0) {
-        T data_removed = this->head->data;
+        Node* temp = this->head;
         this->head = this->head->next;
-
-        return data_removed;
-    }
-    else if (index == this->count - 1) {
-        Node * p = this->head;
-        while (p->next->next != nullptr) {
+        this->count--;
+        T data = temp->data;
+        delete temp;
+        return data;
+    } else if (index == this->count - 1) {
+        Node* p = this->head;
+        while (p->next != this->tail) {
             p = p->next;
         }
-        T data_removed = p->next->data;
-        p->next = nullptr;
+        Node* temp = this->tail;
         this->tail = p;
-
-        return data_removed;
-    }
-    else {
-        Node * p = this->head;
+        this->tail->next = nullptr;
+        this->count--;
+        T data = temp->data;
+        delete temp;
+        return data;
+    } else {
+        Node* p = this->head;
         while (index > 1) {
             p = p->next;
             index--;
         }
-
-        T data_removed = p->next->data;
+        Node* temp = p->next;
         p->next = p->next->next;
         this->count--;
-
-        return data_removed;
+        T data = temp->data;
+        delete temp;
+        return data;
     }
 }
 
@@ -228,62 +236,164 @@ void SinglyLinkedList<T>::clear() {
     this->count = 0;
 }
 
-
-int main() {
-    SinglyLinkedList<int> list;
-    assert( list.size() == 0 );
-
-    int size = 10;
-    for(int idx=0; idx < size; idx++){
-        list.add(idx);
+template <class T>
+void SinglyLinkedList<T>::reverse() {
+    // reverse singly linked list
+    Node *curr = this->head;
+    Node *prev = nullptr;
+    Node *next = nullptr;
+    while (curr != nullptr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
     }
-    assert( list.size() == size );
+    this->head = prev;
+}
 
-    int values[]   = {10,  15,  2,   6,  4,  7,   40,  8};
-    //                0    1    2    3   4   5    6    7
-    int index[]    = {0,   1,   5,   3,  2,  1,   1,   0};
+/*
+----------------------------------------------------------------------------------
+-----------------------------------INTERATOR--------------------------------------
+----------------------------------------------------------------------------------
+*/
 
-    /*                10,  15,  2,   6,  4,  7,   40,  8 //initial list
-        *                15,  2,   6,   4,  7,  40,  8      //after removeAt 0
-        *                15,  6,   4,   7,  40, 8      //after removeAt 1
-        *                15,  6,   4,   7,  40   //after removeAt 5
-        *                15,  6,   4,   40   //after removeAt 3
-        *                15,  6,   40   //after removeAt 2
-        *                15,  40   //after removeAt 1
-        *                15,   //after removeAt 1
-        *                {}  //after removeAt 0
-        */
-    int expvalues[][8]= {
-        {15,  2,   6,   4,  7,  40,  8},
-        {15,  6,   4,   7,  40, 8},
-        {15,  6,   4,   7,  40},
-        {15,  6,   4,   40 },
-        {15,  6,   40},
-        {15,  40},
-        {15},
-        {}
-    };
 
-    list.clear();
-    assert( list.size() == 0 );
-    assert( list.empty() == true );
-    //
-    for(int idx=0; idx < 8; idx++)
-        list.add(values[idx]);
-    assert( list.size() == 8 );
+template <class T>
+SinglyLinkedList<T>::Iterator::Iterator(SinglyLinkedList<T>* pList, bool begin)
+{
+    /*
+        Constructor of iterator
+        * Set pList to pList
+        * begin = true: 
+        * * Set current (index = 0) to pList's head if pList is not NULL
+        * * Otherwise set to NULL (index = -1)
+        * begin = false: 
+        * * Always set current to NULL
+        * * Set index to pList's size if pList is not NULL, otherwise 0
+    */
+    this->pList = pList;
+    if (begin) {
+        if (pList != NULL) {
+            this->current = pList->head;
+            this->index = 0;
+        } else {
+            this->current = NULL;
+            this->index = -1;
+        }
+    } else {
+        this->current = NULL;
+        if (pList != NULL) this->index = pList->size();
+        else this->index = 0;
+    }
+}
 
-    //removeAt:
-    int count = 8;
-    for(int idx=0; idx < 8; idx++){
-        int idxRemoved = index[idx];
-        list.removeAt(idxRemoved);
-        assert( list.size() == (count - idx -1) );
-        //check expected values
-        for(int c=0; c < (count - idx -1); c++ ){
-            int exp = expvalues[idx][c];
-            assert(exp == list.get(c));
+template <class T>
+typename SinglyLinkedList<T>::Iterator& SinglyLinkedList<T>::Iterator::operator=(const Iterator& iterator)
+{
+    /*
+        Assignment operator
+        * Set this current, index, pList to iterator corresponding elements.
+    */
+    this->current = iterator.current;
+    this->index = iterator.index;
+    this->pList = iterator.pList;
+
+    return *this;
+}
+
+template <class T>
+void SinglyLinkedList<T>::Iterator::remove()
+{
+    /*
+        Remove a node which is pointed by current
+        * After remove current points to the previous node of this position (or node with index - 1)
+        * If remove at front, current points to previous "node" of head (current = NULL, index = -1)
+        * Exception: throw std::out_of_range("Segmentation fault!") if remove when current is NULL
+    */
+    if (this->current == NULL) throw std::out_of_range("Segmentation fault!");
+    if (this->index == 0) {
+        this->pList->removeAt(0);
+        this->current = NULL;
+        this->index = -1;
+    } else {
+        this->pList->removeAt(this->index);
+        this->current = this->pList->head;
+        this->index = 0;
+        while (this->index < this->index - 1) {
+            this->current = this->current->next;
+            this->index++;
         }
     }
+}
+
+template <class T>
+void SinglyLinkedList<T>::Iterator::set(const T& e)
+{
+    /*
+        Set the new value for current node
+        * Exception: throw std::out_of_range("Segmentation fault!") if current is NULL
+    */
+    if (this->current == NULL) throw std::out_of_range("Segmentation fault!");
+    this->current->data = e;
+}
+
+template <class T>
+T& SinglyLinkedList<T>::Iterator::operator*()
+{
+    /*
+        Get data stored in current node
+        * Exception: throw std::out_of_range("Segmentation fault!") if current is NULL
+    */
+    if (this->current == NULL) throw std::out_of_range("Segmentation fault!");
+    return this->current->data;
+}
+
+template <class T>
+bool SinglyLinkedList<T>::Iterator::operator!=(const Iterator& iterator)
+{
+    /*
+        Operator not equals
+        * Returns false if two iterators points the same node and index
+    */
+    return (this->current != iterator.current || this->index != iterator.index);
+}
+// Prefix ++ overload
+template <class T>
+typename SinglyLinkedList<T>::Iterator& SinglyLinkedList<T>::Iterator::operator++()
+{
+    /*
+        Prefix ++ overload
+        * Set current to the next node
+        * If iterator corresponds to the previous "node" of head, set it to head
+        * Exception: throw std::out_of_range("Segmentation fault!") if iterator corresponds to the end
+    */
+    if (this->index == this->pList->size()) throw std::out_of_range("Segmentation fault!");
+    if (this->current == NULL) this->current = this->pList->head;
+    else this->current = this->current->next;
+    this->index++;
+    return *this;
+}
+// Postfix ++ overload
+template <class T>
+typename SinglyLinkedList<T>::Iterator SinglyLinkedList<T>::Iterator::operator++(int)
+{
+    /*
+        Postfix ++ overload
+        * Set current to the next node
+        * If iterator corresponds to the previous "node" of head, set it to head
+        * Exception: throw std::out_of_range("Segmentation fault!") if iterator corresponds to the end
+    */
+    if (this->index == this->pList->size()) throw std::out_of_range("Segmentation fault!");
+    if (this->current == NULL) this->current = this->pList->head;
+    else this->current = this->current->next;
+    this->index++;
+    return *this;
+}
+
+
+
+int main() {
+
 
 
     return 0;

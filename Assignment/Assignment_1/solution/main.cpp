@@ -32,7 +32,7 @@ void tc2() {
     cout << "s5: " << s5.toString() << endl;
 
     // test subString
-    ConcatStringList s6 = s5.subString(5, 15);
+    ConcatStringList s6 = s5.subString(3, 5);
     cout << "s6: " << s6.toString() << endl;
     
     // test reverse
@@ -65,7 +65,7 @@ void tc3() {
 }
 
 int main() {
-    tc1();
+    // tc1();
     tc2();
     // tc3();
 

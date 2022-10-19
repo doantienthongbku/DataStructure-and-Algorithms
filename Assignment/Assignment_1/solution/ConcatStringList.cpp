@@ -94,17 +94,18 @@ ConcatStringList ConcatStringList::subString(int from, int to) const {
 
     CharALNode* p = head;
     while (p->getStrLen() < from) {
-        p = p->next;
+        
         from = from - p->getStrLen();
+        p = p->next;
     }
 
     if (new_len <= p->getStrLen() - from) {
 
         char* sub_buff = new char[new_len + 1];
-        for (int i = from; i < new_len; i++) {
-            sub_buff[i] = p->data[i];
+        for (int i = from; i < from + new_len; i++) {
+            sub_buff[i - from] = p->data[i];
         } 
-        sub_buff[from + new_len] = '\0';
+        sub_buff[new_len] = '\0';
 
         ConcatStringList out(sub_buff);
         refList.update(out.head, 2);
