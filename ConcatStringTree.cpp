@@ -19,10 +19,19 @@ ConcatStringTree::ConcatStringTree(const char* s) {
     this->root = new Node(s);
 }
 
+int ConcatStringTree::length() const {
+    return 0;
+}
 char ConcatStringTree::get(int index) {
-    //if (index<0 || index>(length - 1)) throw out_of_range("Index of string is invalid!"); // Nem ra ngoai le
-    //else return 'j';
-                                                                                          // Neu index < leftlength thì di vè phia trai
-    // Neu index > leftlength thi di ve phai phai va index -= leftlength
-    // Lap lai den khi gap duoc leaf node
+    if (index < 0 || index > root->length - 1) throw out_of_range("Index of string is invalid!");
+    Node* curr = root;
+    while (curr->data == nullptr) {
+        if (index < curr->leftlenght) curr = curr->left;
+        else 
+        {
+            index -= curr->leftlenght;
+            curr = curr->right;
+        }
+    }
+    return (curr->data)[index];
 }
