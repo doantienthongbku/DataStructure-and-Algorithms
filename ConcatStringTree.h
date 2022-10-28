@@ -4,12 +4,18 @@
 #include "main.h"
 
 class ConcatStringTree {
-private:
-	int* leftLenght;
-	int* length;
-	ConcatStringTree* left;
-	ConcatStringTree* right;
-	string* data;
+public:
+	Node* root;
+	class Node {
+	public:
+		int leftlenght;
+		int length;
+		ConcatStringTree* left;
+		ConcatStringTree* right;
+		char* data;
+	public:
+		Node(const char * s);
+	};
 public:
     ConcatStringTree(const char * s);
     int length() const;
