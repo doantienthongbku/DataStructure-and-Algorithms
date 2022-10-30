@@ -7,18 +7,30 @@ class ConcatStringTree {
 public:
     class Node {
     public:
-        int leftlenght;
+        int leftlength;
         int length;
         Node* left;
         Node* right;
         char* data;
         friend class ConcatStringTree;
     public:
+        Node()
+        {
+            leftlength=0; 
+            length=0; 
+            left=nullptr; 
+            right=nullptr; 
+            data=nullptr; 
+        }
+        Node(ConcatStringTree::Node& r);
         Node(const char* s);
+        string toString();
+        Node reverse();
     };
 public:
     Node* root;
 public:
+    ConcatStringTree(){ root = new Node(); }
     ConcatStringTree(const char* s);
     int length() const;
     char get(int index);
@@ -31,33 +43,9 @@ public:
 
     int getParTreeSize(const string& query) const;
     string getParTreeStringPreOrder(const string& query) const;
-};
-
-class ReducedConcatStringTree; // forward declaration
-
-class HashConfig {
-private:
-    int p;
-    double c1, c2;
-    double lambda;
-    double alpha;
-    int initSize;
-
-    friend class ReducedConcatStringTree;
-};
-
-class ReducedConcatStringTree /* */ {
-
 public:
-    class LitStringHash {
-    public:
-        LitStringHash(const HashConfig& hashConfig);
-        int getLastInsertedIndex() const;
-        string toString() const;
-    };
-
-public:
-    static LitStringHash litStringHash;
+    // toStringPreorder supporter
+    string NLR(Node* r) const;
 };
 
 #endif // __CONCAT_STRING_TREE_H__
