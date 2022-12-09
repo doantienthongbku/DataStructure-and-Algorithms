@@ -228,7 +228,7 @@ void DLinkedList<T>::clear() {
 
 template <class T>
 void DLinkedList<T>::reverse() {
-    // reverse doubly linked list
+    /* Reverse the list */
     if (this->count == 0) return;
     Node* p = this->head;
     while (p) {
@@ -237,4 +237,7 @@ void DLinkedList<T>::reverse() {
         p->previous = q;
         p = q;
     }
+    Node* q = this->head;
+    this->head = this->tail;
+    this->tail = q;
 }

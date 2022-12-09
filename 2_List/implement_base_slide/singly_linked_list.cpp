@@ -238,17 +238,17 @@ void SinglyLinkedList<T>::clear() {
 
 template <class T>
 void SinglyLinkedList<T>::reverse() {
-    // reverse singly linked list
-    Node *curr = this->head;
-    Node *prev = nullptr;
-    Node *next = nullptr;
-    while (curr != nullptr) {
-        next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
+    Node* p = this->head;
+    Node* q = nullptr;
+    Node* r = nullptr;
+    this->tail = this->head;
+    while (p != nullptr) {
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
     }
-    this->head = prev;
+    this->head = q;
 }
 
 /*
