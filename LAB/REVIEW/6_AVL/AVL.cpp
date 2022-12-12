@@ -80,8 +80,56 @@ public:
         }
     }
 
-    void insert(const T &value) {
-        
+    Node* rotL(Node* root) {
+        Node* tmp = root->pRight;
+        root->pRight = tmp->pLeft;
+        tmp->pLeft = root;
+        return tmp;
+    }
+
+    Node* rotR(Node* root) {
+        Node* tmp = root->pLeft;
+        root->pLeft = tmp->pRight;
+        tmp->pRight = root;
+        return tmp;
+    }
+
+    Node BalanceLeft(Node*& root, bool& taller) {
+        Node* left = root->pLeft;
+        if (left->balance == LH) {
+            root = rotR(root);
+            root->balance = EH;
+            root->pRight->balance = EH;
+            taller = false;
+        }
+        else if (left->balance == RH) {
+            Node* right = left->pRight;
+            if (!right) return root;
+            if (right->balance == LH) {
+                root->balance = RH;
+                left->balance = EH;
+            }
+            else if (right->balance == EH) {
+                root->balance = EH;
+                left->balance = EH;
+            }
+            else {
+                root->balance = EH;
+                left->balance = LH;
+            }
+            right->balance = EH;
+            root->pLeft = rotL(left);
+            root = rotR(root);
+            taller = false;
+        }
+        else {
+            root = rotR(root);
+            root->balance = RH;
+            root->pRight->balance = LH;
+            taller = false;
+        }
+
+        return root;
     }
 
     class Node {
@@ -98,11 +146,11 @@ public:
 };
 
 int main() {
-    AVLTree<int> avl;
-    for (int i = 0; i < 9; i++){
-        avl.insert(i);
-    }
-    avl.printTreeStructure();
+    // AVLTree<int> avl;
+    // for (int i = 0; i < 9; i++){
+    //     avl.insert(i);
+    // }
+    // avl.printTreeStructure();
 
     return 0;
 }
