@@ -19,9 +19,9 @@ int interpolationSearch(int arr[], int left, int right, int x) {
 }
 
 int main() {
-    int arr[] = { 1,2,3,4,5,6,7,8,9 };
+    int arr[] = { 1, 5, 7, 8, 16, 30, 33, 35, 41, 49, 51, 52, 59, 61, 65, 68, 69, 71, 72, 75, 76, 83, 85, 89, 97 };
     int n = sizeof(arr) / sizeof(arr[0]);
-    int x = 3;
+    int x = 49;
     int result = interpolationSearch(arr, 0, n - 1, x);
     (result == -1) ? cout << "Element is not present in array"
                 : cout << "Element is present at index " << result;

@@ -170,7 +170,6 @@ public:
     Node* remove(Node* p, K key, bool& shorter) {
         if (!p) {
             shorter = false;
-
             throw ("Not found");
         }
         if (key < p->entry->key) {
