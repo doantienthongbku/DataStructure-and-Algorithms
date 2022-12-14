@@ -1,0 +1,91 @@
+
+    HashConfig hashConfig(
+        2,
+        0.5,
+        0.5,
+        0.75,
+        2,
+        10
+    );
+    LitStringHash * litStringHash = new LitStringHash(hashConfig);
+
+=============================================TEST BASIC=============================================
+    ReducedConcatStringTree * s1 = new ReducedConcatStringTree("hello_", litStringHash);
+    ReducedConcatStringTree * s2 = new ReducedConcatStringTree("Xuan_", litStringHash);
+    ReducedConcatStringTree * s3 = new ReducedConcatStringTree("Huong_", litStringHash);
+
+    cout << litStringHash->toString() << endl;
+    cout << "getLastInsertedIndex: " << litStringHash->getLastInsertedIndex() << endl;
+
+    // test length
+    cout << "s1 length: " << s1->length() << endl;
+    cout << "s2 length: " << s2->length() << endl;
+
+    // test get() function
+    cout << "s1 get(): ";
+    for (int i = 0; i < s1->length(); i++) cout << s1->get(i) << " ";
+    cout << endl;
+    cout << "s2 get(): ";
+    for (int i = 0; i < s2->length(); i++) cout << s2->get(i) << " ";
+    cout << endl;
+    // cout << s1->get(4);
+
+    // test indexOf()
+    cout << "Index of 'n' in s2: " << s2->indexOf('n') << endl;
+
+    // test constructor
+    ReducedConcatStringTree * s4 = new ReducedConcatStringTree("hello_", litStringHash);
+    cout << "getLastInsertedIndex: " << litStringHash->getLastInsertedIndex() << endl;
+    cout << litStringHash->toString() << endl;
+
+    // test toStringPreOrder() and toString()
+    cout << "s1 toString: " << s1->toString() << endl;
+    cout << "s1 toStringPreOrder: " << s1->toStringPreOrder() << endl;
+
+
+=======================================TEST ADVANCED====================================
+
+    // Test function: id
+    ReducedConcatStringTree* s1 = new ReducedConcatStringTree("hello", litStringHash);
+    cout << s1->root->key << endl;					// 1
+    cout << ReducedConcatStringTree::id.value() << endl;	// 2
+
+    ReducedConcatStringTree* s2 = new ReducedConcatStringTree(" world", litStringHash);
+    cout << s2->root->key << endl;					// 2
+    cout << ReducedConcatStringTree::id.value() << endl;	// 3
+
+    cout << s2->root->AVL.toStringPreOrder() << endl;
+
+
+    // test concat() and destructor
+    ReducedConcatStringTree *s1 = new ReducedConcatStringTree("hello", litStringHash);
+    ReducedConcatStringTree *s2 = new ReducedConcatStringTree("_world_", litStringHash);
+    ReducedConcatStringTree *s3 = new ReducedConcatStringTree("hello", litStringHash);
+    ReducedConcatStringTree *s4 = new ReducedConcatStringTree("_Khanh", litStringHash);
+    cout << endl << litStringHash->toString() << endl << endl;
+
+    ReducedConcatStringTree *s5 = new ReducedConcatStringTree(s1->concat(*s2));
+    ReducedConcatStringTree *s6 = new ReducedConcatStringTree(s3->concat(*s4));
+    ReducedConcatStringTree *s7 = new ReducedConcatStringTree(s5->concat(*s6));
+
+    cout << "s7 ParentsTree: " << s7->root->AVL.toStringPreOrder() << endl << endl;
+
+    cout << "s1.concat(s3): " << s1->concat(*s3).toString() << endl;
+    cout << "s1.concat(s3): " << s1->concat(*s3).toStringPreOrder() << endl;
+    cout << endl;
+
+    delete s1;
+    delete s2;
+    delete s3;
+    delete s6;
+
+    cout << "s7.length(): " << s7->length() << endl;
+    cout << "s7: " << s7->toString() << endl;
+    cout << "s7: " << s7->toStringPreOrder() << endl;
+    cout << endl;
+
+    delete s4;
+    delete s5;
+    delete s7;
+    cout << litStringHash->toString() << endl << endl;
+    delete litStringHash;

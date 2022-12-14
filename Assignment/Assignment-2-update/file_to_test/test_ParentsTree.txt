@@ -1,0 +1,71 @@
+/* Test case 1 */
+// Test function: id
+ConcatStringTree* s1 = new ConcatStringTree("hello");
+cout << s1->root->key << endl;					// 1
+cout << ConcatStringTree::id.value() << endl;	// 2
+
+ConcatStringTree* s2 = new ConcatStringTree(" world");
+cout << s2->root->key << endl;					// 2
+cout << ConcatStringTree::id.value() << endl;	// 3
+
+
+// Test to string preorder
+ConcatStringTree* node1 = new ConcatStringTree("Hello");
+
+//cout << node1.root->AVL.root->key << endl;
+//cout << node1.reverse().toString() << endl;
+ConcatStringTree* node2 = new ConcatStringTree (",_t");
+ConcatStringTree* node3 = new ConcatStringTree("his_is");
+ConcatStringTree* node4 = new ConcatStringTree ("_an");
+ConcatStringTree* s1 = new ConcatStringTree (node1->concat(*node2));
+ConcatStringTree* s2 = new ConcatStringTree (node3->concat(*node4));
+ConcatStringTree* s3 = new ConcatStringTree (s1->concat(*s2));
+//delete s3;
+//delete s1;
+//delete s2;
+const string s = "r";
+try { 
+    cout << s1->getParTreeSize(s) << endl;
+    cout << s1->getParTreeStringPreOrder(s) << endl;
+}
+catch (runtime_error& rt) { cout << rt.what() << endl; }
+
+cout << node1->toString() << endl;
+cout << node2->toString() << endl;
+cout << node3->toString() << endl;
+//cout << s1->toString() << endl;
+//cout << s2->toString() << endl;
+//cout << s3->toString() << endl;
+//cout << s1.root->AVL.size() << endl;
+//cout << node1.root->AVL.size() << endl;
+/*cout << node1.root->key << endl;
+cout << node2.root->key << endl;
+cout << node3.root->key << endl;
+cout << node4.root->key << endl;*/
+//cout << s1.root->key << endl;
+//cout << s1.root->left->key << endl;
+//cout << s1.root->right->key << endl;
+//cout << s2.root->key << endl;
+//cout << "break" << endl;
+//cout << s3.root->key << endl;
+//cout << s1.toStringPreOrder() << endl;
+//cout << "break: " << node1.reverse().root->key << endl;
+//cout << s1.reverse().toString() << endl;
+//cout << s1.indexOf('t');
+//cout << node1.toStringPreOrder() << endl;
+//cout << s3.toStringPreOrder() << endl;
+//cout << s3.toString() << endl;
+//cout << s3.indexOf('n') << endl;
+//for (int i = 0; i < s3.length(); i++) cout << s3.get(i);
+//ConcatStringTree trynode ("");
+//cout << trynode.indexOf('a') << endl;
+// Test reverse
+//cout << s3.reverse().toString() << endl;
+//test substring
+//cout << s1.toString() << endl;
+//cout << "roor's leeftlength: " << s1.root->leftLength << endl;
+//cout << s1.subString(0,3).toString() << endl;
+/*cout << s3.subString(6, 18).toString() << endl;
+cout << s3.toString() << endl;
+cout << s3.subString(7, 18).toStringPreOrder() << endl;
+cout << s3.subString(6, 18).reverse().toString() << endl;*/

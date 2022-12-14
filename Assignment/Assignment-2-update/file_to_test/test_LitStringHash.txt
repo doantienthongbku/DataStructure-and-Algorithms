@@ -1,0 +1,38 @@
+/* Test case for LitStringHash */
+HashConfig hashConfig(2, 0.4, 0.5, 0.7, 1.5, 10);
+LitStringHash *hash = new LitStringHash(hashConfig);
+cout << hash->toString() << endl;
+cout << "is empty: " << hash->isEmpty() << endl;
+
+// test hash insert and getLastInsertedIndex
+hash->hashInsert("thong");
+cout << "getLastInsertedIndex " << hash->getLastInsertedIndex() << endl;
+hash->hashInsert("phung");
+cout << "getLastInsertedIndex " << hash->getLastInsertedIndex() << endl;
+hash->hashInsert("cui");
+cout << "getLastInsertedIndex " << hash->getLastInsertedIndex() << endl;
+hash->hashInsert("phong");
+cout << "getLastInsertedIndex " << hash->getLastInsertedIndex() << endl;
+cout << hash->toString() << endl;
+
+// test quadratic function
+hash->hashInsert("thonga");
+hash->hashInsert("thongb");
+hash->hashInsert("thongc");
+hash->hashInsert("thongd");
+cout << hash->toString() << endl;
+
+// test hash search
+cout << "seach of \"cui\" " << hash->hashSearch("cui") << endl;
+cout << "seach of \"thongd\" " << hash->hashSearch("thongd") << endl;
+cout << "seach of \"huong\" " << hash->hashSearch("huong") << endl;
+
+// test remove
+hash->hashRemove("thong");
+cout << hash->toString() << endl;
+
+// check isEmpty
+cout << "is empty: " << hash->isEmpty() << endl;
+
+// check destructor
+delete hash;

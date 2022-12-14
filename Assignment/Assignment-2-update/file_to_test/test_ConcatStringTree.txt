@@ -1,0 +1,79 @@
+/* Test case 1*/
+/* Test function: length(), get(), indexOf() toString() toStringPreorder()*/
+ConcatStringTree::Node node_1("hello");
+ConcatStringTree::Node node_2("Khanh");
+ConcatStringTree::Node node_3("Van");
+
+ConcatStringTree::Node temp_1;
+ConcatStringTree::Node temp_2;
+ConcatStringTree::Node temp_3;
+
+temp_1.pLeft = &temp_2;
+temp_1.pRight = &temp_3;
+temp_1.leftLength = 10;
+temp_1.length = 13;
+
+temp_2.pLeft = &node_1;
+temp_2.pRight = &node_2;
+temp_2.leftLength = 5;
+temp_2.length = 10;
+
+temp_3.pRight = &node_3;
+temp_3.leftLength = 0;
+temp_3.length = 3;
+
+ConcatStringTree s;
+s.root = &temp_1;
+
+// test length() function
+cout << "Length of string: " << s.length() << endl;
+
+// test get() function
+for (int i = 0; i < s.length(); i++) cout << s.get(i) << " ";
+// cout << s.get(-1) << " " << s.get(13);
+cout << endl;
+
+// test indexOf() function
+cout << "Index of 'n': " << s.indexOf('n') << endl;
+
+// test toString() function
+cout << "ToString: " << s.toString() << endl;
+
+// test toStringPreOrder() function
+cout << "toStringPreOrder" << s.toStringPreOrder() << endl;
+
+
+
+
+/*Test case 2*/
+/* Test function: concat(), subString(), reverse() */
+ConcatStringTree s1("hello");
+ConcatStringTree s2("Khanh");
+ConcatStringTree s3("Van");
+ConcatStringTree s4("nha");
+
+ConcatStringTree s5 = s1.concat(s2);
+ConcatStringTree s6 = s3.concat(s4);
+ConcatStringTree s7 = s5.concat(s6);
+
+// test concat() function
+cout << "s1.concat(s2): " << s5.concat(s4).concat(s3).toString() << endl;
+cout << "s1.concat(s2): " << s5.concat(s4).concat(s3).toStringPreOrder() << endl;
+cout << endl;
+
+cout << "s7.length(): " << s7.length() << endl;
+cout << "s7: " << s7.toString() << endl;
+cout << "s7: " << s7.toStringPreOrder() << endl;
+cout << endl;
+
+// test subString() function
+ConcatStringTree s8 = s7.subString(6, 13);
+cout << "s8.length(): " << s8.length() << endl;
+cout << "s8: " << s8.toString() << endl;
+cout << "s8: " << s8.toStringPreOrder() << endl;
+cout << endl;
+
+//test reverse() function
+ConcatStringTree s9 = s8.reverse();
+cout << "s9: " << s9.toString() << endl;
+cout << "s9: " << s9.toStringPreOrder() << endl;
